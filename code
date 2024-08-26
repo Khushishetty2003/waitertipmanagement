@@ -1,0 +1,330 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
+
+# Load the dataset
+data = pd.read_csv('tips.csv')
+
+# Data preprocessing
+X = data.drop('tip', axis=1)
+y = data['tip']
+
+# One-hot encode categorical variables
+X = pd.get_dummies(X)
+
+# Split data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
+
+# Train Linear Regression model
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+# Make predictions
+predictions = model.predict(X_test)
+
+# Evaluate the model
+mse = mean_squared_error(y_test, predictions)
+print("Mean Squared Error:", mse)
+
+# Example data for prediction
+example = [[1500, 'male', 'no', 'Sunday', 'Dinner', 3]]
+example_df = pd.DataFrame(example, columns=['total_bill', 'sex', 'smoker', 'day', 'time', 'size'])
+
+# One-hot encode categorical variables to match the format of the training data
+example_df = pd.get_dummies(example_df)
+
+# Ensure the example data has the same columns as the training data
+missing_cols = set(X.columns) - set(example_df.columns)
+for col in missing_cols:
+    example_df[col] = 0
+
+# Reorder columns to match the training data
+example_df = example_df[X.columns]
+
+# Predict the tip for the example data
+tip_prediction = model.predict(example_df)
+print("Predicted tip for the example:", tip_prediction[0])
+
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_squared_error
+
+# Load the dataset
+data = pd.read_csv('tips.csv')
+
+# Data preprocessing
+X = data.drop('tip', axis=1)
+y = data['tip']
+
+# One-hot encode categorical variables
+X = pd.get_dummies(X)
+
+# Split data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
+
+# Train Random Forest regressor
+model = RandomForestRegressor()
+model.fit(X_train, y_train)
+
+# Make predictions
+predictions = model.predict(X_test)
+
+# Evaluate the model
+mse = mean_squared_error(y_test, predictions)
+print("Mean Squared Error:", mse)
+
+# Example data for prediction
+example = [[900, 'male', 'no', 'Sunday', 'Dinner', 4]]
+example_df = pd.DataFrame(example, columns=['total_bill', 'sex', 'smoker', 'day', 'time', 'size'])
+
+# One-hot encode categorical variables to match the format of the training data
+example_df = pd.get_dummies(example_df)
+
+# Ensure the example data has the same columns as the training data
+missing_cols = set(X.columns) - set(example_df.columns)
+for col in missing_cols:
+    example_df[col] = 0
+
+# Reorder columns to match the training data
+example_df = example_df[X.columns]
+
+# Predict the tip for the example data
+tip_prediction = model.predict(example_df)
+print("Predicted tip for the example:", tip_prediction[0])
+
+
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.metrics import mean_squared_error
+from sklearn.preprocessing import OneHotEncoder
+
+# Load the dataset
+data = pd.read_csv('tips.csv')
+
+# Data preprocessing
+X = data.drop('tip', axis=1)
+y = data['tip']
+
+# Encode categorical variables using one-hot encoding
+X_encoded = pd.get_dummies(X)
+
+# Split data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X_encoded, y, test_size=0.25, random_state=42)
+
+# Train Decision Tree regressor
+model = DecisionTreeRegressor()
+model.fit(X_train, y_train)
+
+# Make predictions
+predictions = model.predict(X_test)
+
+# Evaluate the model
+mse = mean_squared_error(y_test, predictions)
+print("Mean Squared Error:", mse)
+
+# Example data for prediction
+example = [[1500, 'male', 'no', 'Sunday', 'Dinner', 3]]
+example_df = pd.DataFrame(example, columns=['total_bill', 'sex', 'smoker', 'day', 'time', 'size'])
+
+# Encode categorical variables in the example data using one-hot encoding
+example_encoded = pd.get_dummies(example_df)
+
+# Align the example data columns with the training data columns
+example_encoded = example_encoded.reindex(columns=X_encoded.columns, fill_value=0)
+
+# Make predictions for the example data
+example_predictions = model.predict(example_encoded)
+
+# Print the predicted tip for the example data
+print("Predicted tip for the example:", example_predictions[0])
+
+
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.linear_model import LinearRegression
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.metrics import mean_squared_error
+import matplotlib.pyplot as plt
+
+# Load the dataset
+data = pd.read_csv('tips.csv')
+
+# Data preprocessing
+X = data.drop('tip', axis=1)
+y = data['tip']
+
+# One-hot encode categorical variables
+X = pd.get_dummies(X)
+
+# Split data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
+
+# Train Random Forest regressor
+model_rf = RandomForestRegressor()
+model_rf.fit(X_train, y_train)
+predictions_rf = model_rf.predict(X_test)
+
+# Train Linear Regression model
+model_lr = LinearRegression()
+model_lr.fit(X_train, y_train)
+predictions_lr = model_lr.predict(X_test)
+
+# Train Decision Tree regressor
+model_dt = DecisionTreeRegressor()
+model_dt.fit(X_train, y_train)
+predictions_dt = model_dt.predict(X_test)
+
+# Evaluate the models
+mse_rf = mean_squared_error(y_test, predictions_rf)
+mse_lr = mean_squared_error(y_test, predictions_lr)
+mse_dt = mean_squared_error(y_test, predictions_dt)
+
+print("Mean Squared Error (Random Forest):", mse_rf)
+print("Mean Squared Error (Linear Regression):", mse_lr)
+print("Mean Squared Error (Decision Tree):", mse_dt)
+
+# Example data for prediction
+example = [[1500, 'male', 'no', 'Sunday', 'Dinner', 3]]
+example_df = pd.DataFrame(example, columns=['total_bill', 'sex', 'smoker', 'day', 'time', 'size'])
+
+# One-hot encode categorical variables to match the format of the training data
+example_df = pd.get_dummies(example_df)
+
+# Ensure the example data has the same columns as the training data
+missing_cols = set(X.columns) - set(example_df.columns)
+for col in missing_cols:
+    example_df[col] = 0
+
+# Reorder columns to match the training data
+example_df = example_df[X.columns]
+
+# Predict the tip for the example data using each model
+tip_prediction_rf = model_rf.predict(example_df)
+tip_prediction_lr = model_lr.predict(example_df)
+tip_prediction_dt = model_dt.predict(example_df)
+
+print("Predicted tip for the example (Random Forest):", tip_prediction_rf[0])
+print("Predicted tip for the example (Linear Regression):", tip_prediction_lr[0])
+print("Predicted tip for the example (Decision Tree):", tip_prediction_dt[0])
+
+# Plotting the predictions
+plt.figure(figsize=(10, 6))
+
+# Actual tips
+plt.scatter(range(len(y_test)), y_test, color='blue', label='Actual', alpha=0.5)
+
+# Predicted tips for Random Forest model
+plt.scatter(range(len(predictions_rf)), predictions_rf, color='green', label='Random Forest', alpha=0.5)
+
+# Predicted tips for Linear Regression model
+plt.scatter(range(len(predictions_lr)), predictions_lr, color='red', label='Linear Regression', alpha=0.5)
+
+# Predicted tips for Decision Tree model
+plt.scatter(range(len(predictions_dt)), predictions_dt, color='orange', label='Decision Tree', alpha=0.5)
+
+plt.title('Comparison of Actual vs Predicted Tips')
+plt.xlabel('Index')
+plt.ylabel('Tip')
+plt.legend()
+plt.show()
+
+
+
+#Residual Plot:
+residuals = y_test - predictions_rf  
+plt.scatter(predictions_rf, residuals)
+plt.xlabel('Predicted Tips')
+plt.ylabel('Residuals')
+plt.title('Residual Plot')
+plt.axhline(y=0, color='r', linestyle='-')
+plt.show()
+
+
+feature_importances = model_rf.feature_importances_  
+plt.barh(X.columns, feature_importances)
+plt.xlabel('Feature Importance')
+plt.ylabel('Feature')
+plt.title('Feature Importance Plot')
+plt.show()
+
+
+
+import seaborn as sns
+
+plt.figure(figsize=(10, 6))
+sns.histplot(y_test, color='blue', label='Actual', kde=True)
+sns.histplot(predictions_rf, color='green', label='Random Forest Predictions', kde=True)
+plt.xlabel('Tip')
+plt.ylabel('Frequency')
+plt.title('Distribution of Actual vs Predicted Tips')
+plt.legend()
+plt.show()
+
+from sklearn.tree import DecisionTreeRegressor
+plt.figure(figsize=(10, 6))
+sns.histplot(y_test, color='blue', label='Actual', kde=True)
+sns.histplot(predictions_dt, color='green', label='Decision Tree Predictions', kde=True)
+plt.xlabel('Tip')
+plt.ylabel('Frequency')
+plt.title('Distribution of Actual vs Predicted Tips (Decision Tree)')
+plt.legend()
+plt.show()
+
+
+
+plt.scatter(y_test, predictions_lr)  # Assuming Linear Regression model is used
+plt.plot(y_test, y_test, color='red')  # Plotting the ideal line where actual = predicted
+plt.xlabel('Actual Tips')
+plt.ylabel('Predicted Tips')
+plt.title('Regression Line Plot')
+plt.show()
+
+
+
+
+
+train_errors, test_errors = [], []
+for m in range(1, len(X_train)):
+    model.fit(X_train[:m], y_train[:m])
+    train_predictions = model.predict(X_train[:m])
+    test_predictions = model.predict(X_test)
+    train_errors.append(mean_squared_error(y_train[:m], train_predictions))
+    test_errors.append(mean_squared_error(y_test, test_predictions))
+
+plt.plot(np.sqrt(train_errors), "r-", label="Train")
+plt.plot(np.sqrt(test_errors), "b-", label="Test")
+plt.xlabel('Training Set Size')
+plt.ylabel('RMSE')
+plt.title('Learning Curve')
+plt.legend()
+plt.show()
+
+
+import matplotlib.pyplot as plt
+
+# Dictionary to store MSE values
+mse_values = {}
+
+# Train and make predictions for each model
+for name, model in models.items():
+    model.fit(X_train, y_train)
+    y_pred = model.predict(X_test)
+    mse = mean_squared_error(y_test, y_pred)
+    mse_values[name] = mse
+
+# Plotting the MSE values
+plt.figure(figsize=(10, 6))
+plt.bar(mse_values.keys(), mse_values.values(), color='skyblue')
+plt.xlabel('Model')
+plt.ylabel('Mean Squared Error')
+plt.title('Mean Squared Error for Different Models')
+plt.xticks(rotation=45)
+plt.show()
+
